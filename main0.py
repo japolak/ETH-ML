@@ -63,8 +63,6 @@ print('train RMSE',RMSE)
 
 #%% Save solution
 solution = test_hat
+#dummy_solution = 0.1*np.ones(len(test))
 path_solution = os.path.join(path_dir + '/task0.csv')
 save_solution(path_solution,solution)
-# eg.
-#dummy_solution = 0.1*np.ones(len(test))
-#save_solution(solution_path, dummy_solution)
