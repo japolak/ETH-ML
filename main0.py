@@ -59,7 +59,7 @@ test_hat=np.array(test.mean(1))
 y_true = y
 y_pred = train_hat
 RMSE = mean_squared_error(y_true, y_pred)**0.5
-print('RMSE',RMSE)
+print('train RMSE',RMSE)
 
 #%% Save solution
 solution = test_hat
