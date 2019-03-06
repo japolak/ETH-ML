@@ -24,7 +24,7 @@ def save_solution(csv_file,pred_prob):
 		df = pd.DataFrame.from_dict({'Id':range(10000,10000+len(pred_prob)),'y': pred_prob})
 		df.to_csv(csv,index = False)
 
-def load_all_data(csv_file):
+def read_data(csv_file):
     with open(csv_file,'r') as csv:
         df = pd.read_csv(csv)
     return df
@@ -44,7 +44,7 @@ def get_target(csv_file):
 	return y
 
 #%% Read Data
-df=load_all_data(path_train)
+df=read_data(path_train)
 train=get_data(path_train)
 test=get_data(path_test)
 y=pd.DataFrame(get_target(path_train),columns = list('y'))
