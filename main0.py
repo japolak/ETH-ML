@@ -10,9 +10,7 @@ This is a main script file for Intro to Machine Learning 2019.
 import os
 import numpy as np
 import pandas as pd
-import warnings
 from sklearn.metrics import mean_squared_error
-from sklearn.model_selection import train_test_split
 
 #%% Select directory
 # You just need to replace/copy the directory below, where this file 'main0.py' is located on your computer.
