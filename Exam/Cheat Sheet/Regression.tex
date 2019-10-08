@@ -1,0 +1,46 @@
+\section*{ \normalsize{Regression}}
+\subsection*{Convex}
+$\text{g(x) is convex} \Leftrightarrow x_1,x_2 \in \mathbb{R}, \lambda \in [0,1]: g''(x) > 0$\\
+$g(\lambda x_1 + (1-\lambda) x_2) \leq \lambda g(x_1) + (1-\lambda) g(x_2)$\\
+Jensen: $g(\mathds{E} [X] )\leq \mathds{E}[g(x)]$
+\subsection*{Gaussian/Multivariate Normal}
+Ass: $\mu =$ mean, $\sigma =$ std., $\sigma^2 =$ var., $\Sigma=$ covar.:\\
+$f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} exp(-\frac{(x-\mu)^2}{2\sigma^2})$\\
+$f(x)= ((2\pi)^d |\Sigma|)^{-1/2} \exp(-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu))$
+\subsection*{Standardization}
+$\forall$ features: $\mu = 0$, $\sigma^2=1$: $\tilde{x}_{i,j} = \frac{(x_{i,j}-\hat{\mu}_j)}{\hat{\sigma}_j}$\\
+$\hat{\mu}_j = \frac{1}{n}\sum_{i=1}^n x_{i,j}$,  $\hat{\sigma}_j^2 = \frac{1}{n}\sum_{i=1}^n {(x_{i,j}-\hat{\mu}_j)}^2$ 
+\subsection*{Generalization Error}
+Ass: data generated iid: ( expected / estim )\\
+$R(w) =\int P(x,y) (y-w^Tx)^2 dx dy = \mathbb{E}_{x,y}[(y-w^Tx)^2]$\\
+$\hat{R}_D(w) = \frac{1}{|D|}\sum_{(x,y)\in D} {(y-w^Tx)^2}$ 
+
+\subsection*{Linear Regression}
+Optim: $w^* = \arg\min_w \: \hat{R}(w)$;   $ \; y=Xw$\\
+Error: $\hat{R}(w) = \sum_{i=1}^n (y_i - w^Tx_i)^2 = ||Xw-y||^2_2$\\
+Closed form: $w^*=(X^T X)^{-1} X^T y$\\
+$\nabla_w \hat{R}(w) = -2 \sum_{i=1}^n (y_i-w^T x_i) \cdot x_i = 2X^T (Xw-y)$
+
+\subsection*{L2: Ridge Regression}
+Regularization $\lambda$: $ \min_w \hat{L}(w) +\lambda C(w)$\\
+Optim: $\hat{R}(w)= \| Xw-y \|_2^2 + \lambda \|w\|_2^2$\\
+Closed form: $w^*=(X^T X + \lambda I)^{-1} X^T y$\\
+$\nabla_w \hat{R}(w) = 2X^T(Xw-y)+ 2 \lambda w$
+
+
+
+
+
+
+\subsection*{Gradient Descent}
+1. Start arbitrary $w_o \in \mathbb{R}$\\
+2. For $t = 1,2,...$ do $w_{t+1} = w_t - \eta_t \nabla \hat{R}(w_t)$\\
+Complexity: $\mathcal{O}(nd)$
+\subsection*{Stochastic Gradient Descent (SGD)}
+1. Start at an arbitrary $w_0 \in \mathbb{R}^d$\\
+2. For $t = 1, 2,  ...$ do: \\
+	Pick data point $(x',y') \in_{\text{unif.a.r.}} D$\\
+	$w_{t+1} = w_t - \eta_t \nabla_w l(w_t;x',y')$\\
+Complexity: $\mathcal{O}(dT)$
+
+

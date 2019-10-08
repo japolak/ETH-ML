@@ -1,0 +1,22 @@
+\section*{\normalsize{Imbalance}}
+\subsection*{Cost Sensitive Classification}
+Replace loss by: $l_{CS}(w;x,y) = c_y l(w;x,y)$\\
+$\hat{R}(w;c_+,c_-)=\sum_{i:+}c_+ l(w;x_i,y_i)+\sum_{i:-}c_- l(w;x_i,y_i)$
+
+\definecolor{ag}{rgb}{0.0, 0.5, 0.0}
+\definecolor{ar}{rgb}{0.7, 00, 0.0}
+
+\subsection*{Metrics}
+Accuracy: $\frac{TP+TN}{TP+TN+FP+FN}$, Precision: $\frac{TP}{TP+FP}=\frac{TP}{p_+}$\\ 
+TPR (Recall)=: $\frac{TP}{TP+FN}=\frac{TP}{n_+}$, FPR = $\frac{FP}{TN+FP}=\frac{FP}{n_-}$\\
+F1 score: $\frac{2TP}{2TP+FP+FN}$ 
+\begin{tabular}{ c c c c }
+ $\hat{y} \backslash y$ & $+$ & $-$ &  \\ 
+ $\color{ag}+$ & T$\color{ag}\text{P}$ & F$\color{ag}\text{P}$ & $p_+$\\  
+ $\color{ar}-$ & F$\color{ar}\text{N}$ & T$\color{ar}\text{N}$ & $p_-$ \\
+  & $n_+$ & $n_-$ & $n$
+ \end{tabular}
+
+\subsection*{Multi-Class Hinge Loss}
+One vs. One | One vs. All | Maintain $w^{(1)},..,w^{(c)}$ \\
+$l_{MC-H}(w^{(1:c)};x,y) = \text{max} (0,1+ \underset{\forall j\neq y}{\operatorname{max }}\; w^{(j)T} x - w^{(y)T} x)$

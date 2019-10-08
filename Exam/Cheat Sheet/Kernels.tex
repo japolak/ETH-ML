@@ -1,0 +1,71 @@
+\section*{\normalsize{Kernels }}
+
+\subsection*{Properties of a Kernel}
+k mb function: $f: X \times X \rightarrow R$\\
+k mb symmetric: $k(x,y) = k(y,x)$\\
+k mb inner product: $k(x,y) = \langle \phi(x)^T,\phi(y) \rangle$\\
+Matrix K must be positive semi-definite (psd).\\
+$K = 
+\begin{bmatrix}
+	k(x_1,x_1) & \dots & k(x_1,x_n) \\
+	\vdots & \ddots & \vdots \\
+	k(x_n, x_1) & \dots & k(x_n,x_n)
+\end{bmatrix}$\\
+positive semi-definite matrices $\Leftrightarrow$ kernels
+%$\left ( XX^T \right )$ for inner product as kernel.
+
+\subsection*{Definition of PSD}
+$M \in \mathbb{R}^{n\times n}$ is psd $\Leftrightarrow$\\
+$\forall \alpha \in \mathbb{R}^n: \alpha^TM\alpha \geq 0 \Leftrightarrow \sum_i\sum_j \alpha_i \alpha_j k(x_i,x_j)\geq 0 \Leftrightarrow$\\
+all eigenvalues of $M$ are positive: $\lambda_i\geq 0$
+
+
+
+\subsection*{Examples of kernels on $\mathbb{R}^d$}
+Linear: $k(x,y)=x^T y$; Constant: $ k(x,y)=c, c>0$\\
+Monomial: $k(x,y)=(x^T y)^d$\\
+Polynomial: $k(x,y)=(x^T y + 1)^d$\\
+Gaussian: $k(x,y) = exp(-||x-y||_2^2/h^2)$\\
+Laplacian: $k(x,y) = exp(-||x-y||_1/h)$\\
+h = bandwidth $\approx 1\sigma$ 
+
+
+\subsection*{Kernel composition}
+$k_1(x,y) + k_2(x,y)$; $k_1(x,y) \cdot k_2(x,y)$; $c \cdot k_1(x,y)$,$c>0$;\\
+$f(k_1(x,y))$, where $f$ is a polyinomial with pos. coeffs. or the exponential function
+
+
+\subsection*{Parametric vs. Nonparametric}
+\emph{Parametric}: have finite set of parameters\\
+$f(x) = w^Tx, w\in \mathbb{R}^d$ (d is independent of \# data)\\
+\emph{Nonparametric}: grow in complexity with size of data\\
+$f(x) = \sum_{i=1}^n \alpha_i y_i k(x_i,x_n)$ (depends on \# data)
+
+\subsection*{Kernelized perceptron}
+Trick: $x^Ty \mapsto \phi(x)^T \phi(y) =: k(x,y)$ s.t. $ \exists \phi: X \rightarrow \mathds{R}^d $
+Ass: $w \in \text{span}(X) \rightarrow  w=\sum_{j=1}^n \alpha_j y_j x_j$\\
+Kernel: $k_i=[y_1 k(x_i,x_1), ..., y_n k(x_i,x_n)]^T$:\\
+Optim: $\hat{R}(w)=\min_{w\in \mathds{R}^d} \sum_{i}^n \max \{0, -y_i w^T x_i\}$\\
+$\hat{R}(\alpha)= \min_{\alpha_{1:n}} \sum_{i=1}^n \max \{0,- \sum_{j=1}^n \alpha_j y_i y_j x_i^T x_j \}$\\
+Perceptron: $\min_\alpha \sum_{i=1}^n \max\{0,-y_i \alpha^T k_i\}$
+\subsection*{SGD Updates}
+1. Initialize $\alpha_{1:n} = 0$\\
+2. For $t = 1, 2, ...$ do:  $(x_i,y_i) \in_{u.a.r} D$\\
+Check: $\hat{y} = sign(\sum_{j=1}^n \alpha_j y_j k(x_j,x_i))$\\
+Update: If $\hat{y} \not = y_i$ set $\alpha_i = \alpha_i + \eta_t$\\
+Predict new x: $\hat{y} = \text{sign}(\sum_{j=1}^n \alpha_j y_j k(x_j,x))$
+\subsection*{Kernelized SVM}
+SVM: $\underset{\alpha}{min}\sum_{i=1}^n max\{0,1-y_i \alpha^T k_i\} +\lambda\alpha^T D_y K D_y \alpha$\\
+Prediction: $y = sign(\sum_{j=1}^n \alpha_j y_j k(x_j,x))$
+
+\subsection*{Kernelized linear regression + ridge}
+Ass: $w^*=\sum_i \alpha_i x=X^T \alpha$\\
+%Parametric: $w^* = \underset{w}{\operatorname{argmin}} \sum_i (w^Tx_i-y_i)^2 + \lambda ||w||_2^2$\\
+%$= \underset{\alpha_{1:n}}{\operatorname{argmin}} \sum \limits_{i=1}^n (\sum \limits_{j=1}^n \alpha_j x_j^T x_i - y_i)^2 + \lambda \sum \limits_i \sum \limits_j \alpha_i \alpha_j (x_i^T x_j)$\\
+%$= \underset{\alpha_{1:n}}{\operatorname{argmin}} \sum \limits_{i=1}^n (\alpha^T K_i - y_i)^2 + \lambda \alpha^T K \alpha$\\
+KLR: $\hat{a}= \arg \min_\alpha ||\alpha^T K -y||_2^2 + \lambda \alpha^T K \alpha$\\
+Closed form: $\alpha^* = (K+\lambda I)^{-1} y$\\
+Prediction: $y = w^{*T} x = \sum_{i=1}^n \alpha_i^* k(x_i,x)$
+
+\subsection*{Nearest Neighbor k-NN}
+$y=sign(\sum_{i=1}^n y_i [x_i \text{ among k nn of } x])$

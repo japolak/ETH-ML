@@ -69,7 +69,7 @@ for j in lamb:
         Ytrain = Y[~index];Ytest = Y[index]
         
         weights = ridge_coef(Xtrain,Ytrain,j)
-        Y_hat = ridge_fit(Xtest,weights)
+        Y_hat = ridge_fit(Xtest.values,weights)
         
         score.append(RMSE(Y_hat,Ytest))
     sol.append(np.mean(score))

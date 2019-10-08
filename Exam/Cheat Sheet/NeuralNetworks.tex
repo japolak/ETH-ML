@@ -1,0 +1,34 @@
+\section*{\normalsize{Neural Networks}}
+\subsection*{Learning features}
+Parameterize feature maps, optimize over params\\
+$w^* = \text{argmin}_{w, \theta} \sum_{i=1}^n l(y_i; w \phi(x_i, \theta))$\\
+such that $\phi(x,\theta) = \varphi(\theta^T x) = \varphi(z)$ \\
+Optim: $W^* = \text{argmin}_W \sum_{i=1}^{n} l(W;y_i,x_i) $
+
+\subsection*{Activation functions}
+Sigmoid: $\varphi(z) = (1+\exp(-z))^{-1}$, $ \varphi'(z)=(1-\varphi(z))\varphi(z)$\\
+Tanh (-1,1): $\varphi(z) = tanh(z) = \frac{exp(z)-exp(-z)}{exp(z)+exp(-z)}$\\
+ReLu:  $\varphi(z) = max(z,0)$, $\varphi'(z)=1 \text{  if } z>0 $ 
+
+\subsection*{Forward propagation}
+For input layer: $v_j=x_j$ $(v^{(0)}=x)$\\
+For each layer $l=1:L-1$:\\
+- For unit $j$ on layer $l$: $v_j = \varphi(\sum_{i\in (l-1)} w_{j,i}v_i))$\\
+For output layer: $f_j = \sum_{i\in (L-1)} w_{j,i}v_i $\\ 
+Predict: $y_j = f_j$ for reg. / $y_j = sign(f_j)$ for class\\
+$(z^{(l)}=W^{(l)}v^{(l-1)}; \; v^{(l)}=\varphi(z^{(l)}; \; f=W^{(L)}v^{(L-1)})$
+
+\subsection*{Backpropagation}
+For output layer: \\
+- Error: $\delta_j = \ell_j'(f_j) \quad $\\
+- For each unit $i$ on layer $L$: $\partial / \partial w_{j,i} = \delta_j v_i$\\
+For hidden layer $l=\{L-1,...,1\}$:\\
+- Error: $\delta_j = \varphi'(z_j) \sum_{i\in(l+1)} w_{i,j}\delta_i$\\
+- For each unit $i$ on layer $l-1$: $\frac{\partial}{\partial w_{j,i}} = \delta_j v_i$\\
+Error: $\delta^{(L)}=l'(f); \; \; \delta	^{(l)} =\varphi'(z^{(l)})\odot( W^{(l+1)T}\delta^{(l+1)} )$\\
+Gradient: $\nabla_{W^{(l)}} l(W;y,x)=\delta^{(l)}v^{(l-1)T} $
+
+\subsection*{Learning with momentum}
+$a \leftarrow m \cdot a + \eta_t \nabla_W l(W;y,x)$; $W \leftarrow W - a$
+\subsection*{Convolutional}
+CN $o=(n-f+2p)/s +1$; $\color{black}{\#}$p: $ n\cdot n \cdot o \cdot o$ 
