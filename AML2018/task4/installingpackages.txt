@@ -1,0 +1,4 @@
+conda install -c conda-forge #package-name
+
+
+e.g. conda install -c conda-forge tensorflow

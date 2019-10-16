@@ -1,0 +1,6 @@
+ECG arrhythmia classification using a 2-D convolutional neural network
+https://arxiv.org/pdf/1804.06812.pdf
+Github implementation
+https://github.com/ankur219/ECG-Arrhythmia-classification
+Blog post description
+https://medium.com/datadriveninvestor/ecg-arrhythmia-classification-using-a-2-d-convolutional-neural-network-33aa586bad67

@@ -1,0 +1,14 @@
+In this project we were classifying the stages of sleep of mice using 2 channels of EEG and 1 channel of EMG signal.
+The crucial step was performing a feature extraction on both signals.
+This was done in Matlab using the Signal Processing Toolbox.
+There were three types of features that were extracted.
+Time domain based features: Mean, Variance, Maximum, Kurtosis, Skewness, Zero Crossings, Hjorth parameters mobility and complexity, Auto-Regressive coefficient.
+Frequency domain based features: Mean, Median, Spectral entropy, Shannon entropy, Renyi entropy.
+Time-Frequency domain based features:
+Fourier Transformation- Power spectral density, dominant frequency, factoral exponent, spectral edge density, first and second spectral moments,
+total bandwidth power, delta, theta, alpha, sigma, beta, gamma waves and their ratios,
+Wavelet Transformation- leaders, CP2, RH and wavelet variance.
+
+On this features we fitted various models and selected the best one based on the performance during cross-validation and on validation set.
+Unsurprisingly, the aforementioned Neural Network performed the best on public test set. However a simple logistic regression performed similarly well without any tuning, pooling and upsampling.
+Therefore I decided to select the simple logistic regression as my final model, as I am curious if it'll perform similarly well on private test set and possibly outperform the Neural Net there.

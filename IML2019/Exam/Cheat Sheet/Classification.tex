@@ -1,0 +1,44 @@
+\section*{\normalsize{Classification}}
+\subsection*{0/1 loss}
+$l_{0/1}$ is not convex, not differentiable.\\
+$l_{0/1} (w;y_i,x_i) =
+\begin{cases}
+    1 \text{ , if } y_i \neq sign(w^Tx_i)\\
+		0 \text{ , otherwise} 
+\end{cases}$
+
+\subsection*{Perceptron loss}
+$l_P$ is convex, not differentiable, gradient inform.\\
+$l_{P} (w;y_i,x_i) = \max \{0, -y_i w^T x_i \}$\\
+$\nabla_w l_p = \begin{cases}
+    0 &\text{ , if  } y_i w^T x_i \geq 0\\
+    -y_i x_i &\text{ , if  } y_i w^T x_i < 0
+\end{cases}\\
+$
+
+\subsection*{Hinge loss}
+$l_H$ upper bounds \#mistakes, encourages margin \\
+$l_H(w;x,y) = \max \{0,1-y_i w^T x_i\}$\\
+$\nabla_w l_H =
+\begin{cases}
+   -y_i x_i &\text{ , if  } y_i w^T x_i < 1 \\
+   0 & \text{ , if  } y_i w^T x_i \geq 1 
+\end{cases}
+$
+
+
+\subsection*{SVM - Max Margin}
+Goal: max the margin around the separator with $l_H$\\
+Optim: $\hat{R}(w)=\max \{0,1-y^T Xw \} + \lambda ||w||_2^2$\\
+$\nabla_w \hat{R}(w) = 
+\begin{cases}
+    -X^T y+ 2\lambda w & \text{ , if } y_i w^T x_i<1\\
+		2\lambda w & \text{ , if } y_i w^T x_i \geq 1
+\end{cases}
+$\\
+L1: $\| w\|_1$ sends coeff to be zero (only lin. models)
+
+
+\subsection*{Matrix-Vector Gradient}
+$\beta \in \mathbb{R}^d$:
+$\nabla_\beta ( ||y-X\beta||_2^2 + \lambda ||\beta||_2^2 ) = 2X^T (y-X\beta) + 2\lambda \beta$
