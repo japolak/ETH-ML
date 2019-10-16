@@ -1,6 +1,0 @@
-Our task is to perform 10-fold cross validation with ridge regression for each of the lambdas (regularisation parameters) in (0.1, 1, 10, 100, 1000).
-Therefore, since it was possible for ridge, I did a closed form solution given by the equations in lecture to obtain a more precise results.
-The code is a nested for loop where the outer loop goes over the range of lambdas given above and the inner loop goes over the folds (in 10 fold CV).
-In the inner loop I assign values of X and Y to train and test datasets, compute the coefficient via the closed form solution in lecture using linear algebra, compute the predictions of Y for X in test (done just by multiplying weights by X) and store the score.
-In the outer loop I then average the score over the 10 folds and again store it for each lambda. The solution is to report the Root Mean Squared Error averaged over the 10 test folds.
-I obtained result very close to zero as solving the equations retains the high precision of solution.
