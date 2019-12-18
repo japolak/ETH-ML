@@ -11,7 +11,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # Trees ensamble models
-from sklearn.ensemble import (RandomForestClassifier, AdaBoostClassifier, 
+from sklearn.ensemble import (RandomForestClassifier, AdaBoostClassifier,
                               GradientBoostingClassifier, ExtraTreesClassifier)
 from sklearn.neighbors import (KNeighborsClassifier,RadiusNeighborsClassifier)
 
@@ -51,23 +51,23 @@ x_test = test.values # Creats an array of the test data
 
 # Scaling the data
 ScaleData=True
-if ScaleData :  
+if ScaleData :
     scaler = StandardScaler()
     x_train = scaler.fit_transform(x_train)
     x_test = scaler.fit_transform(x_test)
-del ScaleData    
+del ScaleData
 
 # Create validation set
 nvalid = 0.0 # 0 means no validation set (ratio!)
 x_train, x_valid, y_train, y_valid = train_test_split(x_train,y_train,test_size=nvalid,random_state=0)
 if nvalid ==0 : del x_valid, y_valid, nvalid
 
-# Some useful parameters 
+# Some useful parameters
 ntrain = train.shape[0]
 ntest = test.shape[0]
 nclasses = len(np.unique(train_labels['y']))
 
-nseed = 0 
+nseed = 0
 nfolds = 10
 skf = StratifiedKFold(n_splits= nfolds, shuffle=True, random_state=nseed)
 # nweights = ntrain / (nclasses * np.bincount(train_labels['y']))
@@ -77,7 +77,7 @@ skf = StratifiedKFold(n_splits= nfolds, shuffle=True, random_state=nseed)
 colormap = plt.cm.RdBu
 plt.figure(figsize=(24,22))
 plt.title('Pearson Correlation of Features', y=1.05, size=15)
-sns.heatmap(train.astype(float).corr(),linewidths=0.1,vmax=1.0, 
+sns.heatmap(train.astype(float).corr(),linewidths=0.1,vmax=1.0,
             square=True, cmap=colormap, linecolor='white', annot=True)
 
 g = sns.pairplot(train, hue='y',palette="husl")
@@ -86,9 +86,8 @@ g = sns.pairplot(train, hue='y',palette="husl")
 #%% Grid Search for Hyperparameter tuning
 if True:
     param_grid = {
-     
 }
-    
+
     model = MLPClassifier(
             hidden_layer_sizes= (100, 100),
             activation='relu', #'logistic','tanh',
@@ -112,7 +111,7 @@ if True:
         for mean, std, params in zip(means, stds, clf.cv_results_['params']):
             print('%0.3f (+/-%0.03f) for %r' %(mean, std * 2, params))
         del means, stds, mean, std, params
-    # Plot scores for only 1 parameter 
+    # Plot scores for only 1 parameter
     if False:
         param_name = list(param_grid.keys())[0] #plot only if varying one numerical parameter
         def GridSearch_plot(clf,param_name):
@@ -133,17 +132,17 @@ if True:
             plt.show()
         GridSearch_plot(clf,param_name)
 
-#%% Parameters setup for Classifiers 
-        
+#%% Parameters setup for Classifiers
+
 params_lr = {
     'penalty': 'l1',
     'C': 10,
     'fit_intercept': True,
     'class_weight': 'balanced',
     'solver': 'saga',
-    'multi_class': 'multinomial', 
+    'multi_class': 'multinomial',
     'n_jobs': -1
-}        
+}
 
 # Random Forest parameters
 params_rf = {
@@ -188,7 +187,7 @@ params_gb = {
     'validation_fraction': 0.2,
 }
 
-# Support Vector Classifier Gaussian parameters 
+# Support Vector Classifier Gaussian parameters
 params_svc = {
     'kernel' : 'rbf',
     'C' : 3, #5
@@ -208,14 +207,14 @@ params_linsvc = {
 
 #K Nearest Neighbors  parameters
 params_knn = {
-    'n_neighbors':20, 
+    'n_neighbors':20,
     'weights':'uniform',  #'distance','unform'
     'metric':'minkowski'
 }
 
 # Radius Nearest Neighbors parameters
 params_rnn = {
-    'radius': 4, 
+    'radius': 4,
     'weights':'uniform', #'distance'
     'outlier_label': 0
 }
@@ -259,22 +258,22 @@ class SklearnHelper():
 
     def predict(self, x):
         return self.clf.predict(x)
-    
+
     def score(self,x,y_true):
         return self.clf.score(x,y_true)
-    
+
     def feature_importances(self,x,y):
         return self.clf.fit(x,y).feature_importances_
 
-#    def get_params(self, params, deep=True):
-#        return params
-        
-#    def set_params(self, **params):
-#        for parameter, value in params.items():
-#            setattr(self, parameter, value)
-        
-        
-# Class to extend XGboost classifer    
+    def get_params(self, params, deep=True):
+        return params
+
+    def set_params(self, **params):
+        for parameter, value in params.items():
+            setattr(self, parameter, value)
+
+
+# Class to extend XGboost classifer
 class XgbHelper(object):
     def __init__(self, seed=0, params=None):
         self.param = params
@@ -287,7 +286,7 @@ class XgbHelper(object):
 
     def predict(self, x):
         return np.exp(self.gbdt.predict(xgb.DMatrix(x)))
-        
+
 # Function to get Out-of-fold predictions
 def get_oof(clf, x_train, y_train, x_test):
     oof_train_pred = np.zeros((ntrain,))
@@ -300,35 +299,35 @@ def get_oof(clf, x_train, y_train, x_test):
         fold_y_train, fold_y_test = y_train[train_index], y_train[test_index]
 
         clf.fit(fold_x_train,fold_y_train)
-        
+
         oof_train_pred[test_index] = clf.predict(fold_x_test)
         oof_test_skf[i, :] = clf.predict(x_test)
         oof_acc_skf[i]=accuracy_score(fold_y_test,oof_train_pred[test_index])
-    
-    oof_acc_skf_avg = np.mean(oof_acc_skf)    
+
+    oof_acc_skf_avg = np.mean(oof_acc_skf)
     oof_acc_skf_std = np.std(oof_acc_skf)
-    
+
     oof_test_pred[:] = np.median(oof_test_skf, axis=0)
     oof_acc= accuracy_score(y_train, oof_train_pred)
-    
+
     #print('Kfold accuracy average:',oof_acc_skf_avg,'standard dev:',oof_acc_skf_std)
     print('Accuracy score :',oof_acc)
     return oof_train_pred, oof_test_pred #oof_train_pred.reshape(-1, 1), oof_test.reshape(-1, 1)
 
 def get_score(clf,x_train,y_train):
     acc_skf = np.zeros((nfolds,))
-    
+
     for i, (train_index, test_index) in enumerate(skf.split(x_train,y_train)):
         fold_x_train, fold_x_test = x_train[train_index], x_train[test_index]
         fold_y_train, fold_y_test = y_train[train_index], y_train[test_index]
-        
+
         model_svclin.fit(fold_x_train, fold_y_train)
-        
+
         acc_skf[i] = model_svclin.score(fold_x_test,fold_y_test)
-    
+
     acc = round(np.mean(acc_skf),4)
     return acc
-        
+
 
 #%% Models
 # Create objects that represent our models
@@ -354,17 +353,17 @@ model_mlp = SklearnHelper(clf=MLPClassifier, seed=nseed, params=params_mlp)
 # Create our OOF train and test predictions. These base results will be used as new features
 
 print('Extra Trees')
-oof_train_et, oof_test_et = get_oof(model_et, x_train, y_train, x_test) 
+oof_train_et, oof_test_et = get_oof(model_et, x_train, y_train, x_test)
 print('Random Forest')
-oof_train_rf, oof_test_rf = get_oof(model_rf, x_train, y_train, x_test) 
+oof_train_rf, oof_test_rf = get_oof(model_rf, x_train, y_train, x_test)
 print('AdaBoost')
 oof_train_ada, oof_test_ada = get_oof(model_ada, x_train, y_train, x_test)
-print('Gradient Boosting') 
-oof_train_gb, oof_test_gb = get_oof(model_gb, x_train, y_train, x_test) 
+print('Gradient Boosting')
+oof_train_gb, oof_test_gb = get_oof(model_gb, x_train, y_train, x_test)
 print('Support Vector Gaussian')
-oof_train_svc, oof_test_svc = get_oof(model_svc, x_train, y_train, x_test) 
+oof_train_svc, oof_test_svc = get_oof(model_svc, x_train, y_train, x_test)
 print('Support Vector Linear')
-oof_train_linsvc, oof_test_linsvc = get_oof(model_linsvc, x_train, y_train, x_test) 
+oof_train_linsvc, oof_test_linsvc = get_oof(model_linsvc, x_train, y_train, x_test)
 print('K Nearest Neighbors')
 oof_train_knn, oof_test_knn = get_oof(model_knn, x_train, y_train, x_test)
 print('Radius Nearest Neighbors')
@@ -373,27 +372,27 @@ print('Neural Network')
 oof_train_mlp, oof_test_mlp = get_oof(model_mlp, x_train, y_train, x_test)
 
 
-#print('eXtreme Gradient Boosting') 
-#oof_train_xgb, oof_test_xgb = get_oof(model_xgb, x_train, y_train, x_test) 
+#print('eXtreme Gradient Boosting')
+#oof_train_xgb, oof_test_xgb = get_oof(model_xgb, x_train, y_train, x_test)
 print("Training is complete")
 
 
 #%% Tune parameters
 findpar = ['auto','sqrt','log2']
 findval = np.linspace(1,17,17)
-for i in findpar:   
+for i in findpar:
     params_rf = {
         'n_estimators': 500,
         'max_features':i, # auto, sqrt, log2, 0.2
         'max_depth': 10,    #influences overfitting
         'min_samples_leaf': 2,
-        'min_samples_split': 2,    
-        'warm_start': False, 
-        'n_jobs': -1  
+        'min_samples_split': 2,
+        'warm_start': False,
+        'n_jobs': -1
     }
     model_rf = SklearnHelper(clf=RandomForestClassifier, seed=nseed, params=params_rf)
     print(i)
-    oof_train_rf, oof_test_rf = get_oof(model_rf, x_train, y_train, x_test) 
+    oof_train_rf, oof_test_rf = get_oof(model_rf, x_train, y_train, x_test)
 
 
 #%% Feature importances
@@ -412,7 +411,7 @@ feature_dataframe = pd.DataFrame( {'features': train.columns.values,
     'Gradient Boost feature importances': features_gb
     })
 #%% Feature importance plot (interactive)
-# Scatter plot 
+# Scatter plot
 trace = go.Scatter(
     y = feature_dataframe['Random Forest feature importances'].values,
     x = feature_dataframe['features'].values,
@@ -451,7 +450,7 @@ layout= go.Layout(
 fig = go.Figure(data=data, layout=layout)
 py.iplot(fig,filename='scatter2010')
 
-# Scatter plot 
+# Scatter plot
 trace = go.Scatter(
     y = feature_dataframe['Extra Trees  feature importances'].values,
     x = feature_dataframe['features'].values,
@@ -490,7 +489,7 @@ layout= go.Layout(
 fig = go.Figure(data=data, layout=layout)
 py.iplot(fig,filename='scatter2010')
 
-# Scatter plot 
+# Scatter plot
 trace = go.Scatter(
     y = feature_dataframe['AdaBoost feature importances'].values,
     x = feature_dataframe['features'].values,
@@ -529,7 +528,7 @@ layout= go.Layout(
 fig = go.Figure(data=data, layout=layout)
 py.iplot(fig,filename='scatter2010')
 
-# Scatter plot 
+# Scatter plot
 trace = go.Scatter(
     y = feature_dataframe['Gradient Boost feature importances'].values,
     x = feature_dataframe['features'].values,
@@ -642,7 +641,7 @@ gbm = xgb.XGBClassifier(
     max_depth= 4,
     min_child_weight= 2,
     #gamma=1,
-    gamma=0.9,                        
+    gamma=0.9,
     subsample=0.8,
     colsample_bytree=0.8,
     objective= 'binary:logistic',
@@ -650,12 +649,12 @@ gbm = xgb.XGBClassifier(
     scale_pos_weight=1).fit(x_train, y_train)
 predictions = gbm.predict(x_test)
 
-lr = LogisticRegression(penalty='l2', dual=False, tol=0.0001, C=1.0, fit_intercept=True, 
-                        intercept_scaling=1, class_weight=None, random_state=None, solver='warn', 
+lr = LogisticRegression(penalty='l2', dual=False, tol=0.0001, C=1.0, fit_intercept=True,
+                        intercept_scaling=1, class_weight=None, random_state=None, solver='warn',
                         max_iter=100, multi_class=’warn’, verbose=0, warm_start=False, n_jobs=None)
 
 #%% Save solution
-# Generate Submission File 
+# Generate Submission File
 StackingSubmission = pd.DataFrame({ 'PassengerId': PassengerId,
                             'Survived': predictions })
 StackingSubmission.to_csv("StackingSubmission.csv", index=False)

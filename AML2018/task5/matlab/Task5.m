@@ -141,4 +141,25 @@ toc
 
 
 
+TrainData = csvread('X_train.csv',1,1);
+TrainLabels = csvread('y_train.csv',1,1);
+TestData = csvread('X_test.csv',1,1);
+
+%% Preprocesing 1 ---- Replace zeros till window size
+ samples = 8192
+ [ TrainDataP ] = ReplaceMissing( TrainData , samples );
+ [ TestDataP ] = ReplaceMissing( TestData , samples );
+%%
+
+epoch=1;
+data=TrainDataP;
+row=TrainDataP(epoch,:)';
+plot(1:samples,row,'b',[0 8192],[0 0],'r','linewidth',1)
+
+%%
+
+data=TrainDataP;
+train_features=[ef_time(data),ef_freq(data)];
+data=TestDataP;
+test_features=[ef_time(data),ef_freq(data)];
 
