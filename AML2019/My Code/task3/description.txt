@@ -1,0 +1,10 @@
+
+1. Data Cleaning: Cleaned the databy discarding noisy hear beats from sides of the time series as this later influenced the biosppy r peak detection. This was done my taking the max and min values for each heartbeat. This maximal values were standardised by robust scaler (median and 0.75 quantile) and only took part of the time series signal where it wasn't present
+
+2. Data Flipping: We noticed that few observations were inverted due to possibly electrode missplacement. We used several hard-coded coditions but maily it was it the peak below baseline was much much larger than the one above and if the position of minimum were before maximum
+
+3. Feature Engineering: We extracted statistics that were recommended on slides and further engineered few more based on time series domain and spectral domain of the signal, heart beats, heart rates and so on.
+
+4. Autoencoder: Furthermore we used simple convolutional AE on extracted and cleaned template heart beats. The heartbeats from different quantiles were used in a matrix. Observation Bottleneck was only around 30 features.
+
+5. Model prediction: We ensambled several different models among which the best performing ones were gradient boosting trees and hence there were most of those modesl. Finally majority voting of all those models.

@@ -1,0 +1,8 @@
+1. Signal preprocessing: 
+First we processed the time-series by passing it through a low-pass filter with 4th-order Butterworth filter with cutoff frequency 30Hz. This reduce the noise and contribution of higher frequencies which were not in our interest.  
+2. Feature Extraction: 
+We extracted several features in both time and frequency domain. Time domain features were: mean, median, var, max, min, kurtosis, skewness, zero-crossings, hijorth mobility and complexity, mean freq. Frequency-domain features were: dominant frequency est, avg freq from psd, factoral exponent, spectral edge density at 95%, spectral moment zero crossings and extrema per sec, spectral entropy, renyi entropy, bandpower and delta, theta, alpha, sigma, beta, gamma waves.  
+3. Temporal dependency: 
+Besides features from current epoch, we also included as input several other lagged epochs. This created few models which were trained at different lags to capture the sleeping trend and dependency of mice.  
+4. Model with class imbalance:
+Due to our data being highly multicollinear and in tabluar format, we knew tree based methods were going to work the best. We train several models via XGB Boost trees. We used these models to predict the probabilities of each class. These probabilities were then weighted by the inverse class frequencies to compensate for the underconfidence in mostly REM class. This provided significant improvment. Finally we ensambled different models level and different lag level.

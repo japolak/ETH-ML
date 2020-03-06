@@ -1,9 +1,0 @@
-Several approaches were tried to in this Heart-Rythm Classification problem given the time-series data of Electrocardio graphy.
-The approach of manual feature extraction resulted to be the most fruithful one.
-Most features were extracted using the BioSPPY toolbox in python.
-It was used for R peaks detection, QRS complex duration and also to separate individual heartbeats.
-For each patient/observation we calculated the average/median heartbeat and also included the heartbeats falling into .1, .25, .75 and .9 quantiles.
-However the Signal Processing - Wavelet Tranformations toolbox in matlab and autoregressive coefficients were also used as features.
-The final model were a Neural Network build based on approach in the book Hands-on Machine Learning with Scikit-Learn and Tensorflow by Aurelien Geron.
-It had 3 hidden layers each with 500 neurons and activation function relu, sigmoid, sigmoid in this respective order. We also used a dropout rate of .75
-This model performed 9/10 times in 10 fold cross validation above the hard baseline.

@@ -1,0 +1,33 @@
+### Features Explanations
+
+# Time-domain Features
+1. Mean
+2. Median
+3. Variance
+4. Maximum
+5. Kurtosis
+6. Skewness
+7. Zero-Crossings
+8. Hjorth mobility
+9. Hjorth complexity
+10. Mean frequency
+11. Median frequency
+
+# Frequency-domain Features (Fourier Transformation and Power Spectral Density)
+12. Dominant frequency estimate
+13. Average frequency (From PSD)
+14. Factoral Exponent (Slope of linear fit of PSD in loglog graph)
+15. Spectral Edge Density / Integral (Intensity below which 95% of total power of signal is located)
+16. Spectral Moment zero Crossings
+17. Spectral Moment extrema per sec
+18. Spectral Entropy
+19. Renyi Entropy
+20. Bandpower (Total power in .25 - 40 Hz)
+21. Delta waves (.25 - 4 Hz)
+22. Theta waves (4 - 8 Hz)
+23. Alpha waves (8 - 12 Hz)
+24. Sigma waves (12 - 16 Hz)
+25. Beta waves  (16 - 30 Hz)
+26. Gamma waves (30+ Hz)
+
+(Note, you can additionally compute Power Ratios (eg Delta/Theta and similar))
